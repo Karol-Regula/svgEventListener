@@ -44,36 +44,48 @@ function circle(event) {
     //}
     
 }
+var requestID = 0;
 
-function move() {
-  xplus = 1;
-  yplus = 1;
-
-  window.cancelAnimationFrame(requestID);
-
-  function drawDVD(){
-    requestID = window.requestAnimationFrame(drawDVD);
-    if (this.getAttribute("cx") > 615){
-      xplus = -1;
+function moving(event) {
+    var xplus = 1;
+    var yplus = 1;
+    console.log("here");
+    window.cancelAnimationFrame(requestID);
+    
+    function draw(){
+	x = parseInt(this.getAttribute("cx"));
+	y = parseInt(this.getAttribute("cy"));
+	requestID = window.requestAnimationFrame(draw);
+	if (x > 615){
+	    xplus = -1;
+	}
+	if (x < 0){
+	    xplus = 1;
+	}
+	if (y > 715){
+	    yplus = -1;
+	}
+	if (y < 0){
+	    yplus = 1;
+	}
+	this.setAttribute("cx", x + xplus); 
+	d.setAttribute("x", x);
+	d.setAttribute("y", y);
     }
-    if (this.getAttribute("cx") < 0){
-      xplus = 1;
+    var children = document.getElementsByTagName("circle");
+    console.log("and here");
+//    console.log(children[0]);
+    //    console.log(children[1]);
+    var cnt = 0;
+    for (cnt in range(len(children))){
+	
+	console.log(children[cnt]);
+	draw();
     }
-    if (this.getAttribute("cy") > 715){
-      yplus = -1;
-    }
-    if (this.getAttribute("cy") < 0){
-      yplus = 1;
-    }
-    this.setAttribute("cx", this.getAttrubute("cx") + xplus); 
-    d.setAttribute("x", x);
-    d.setAttribute("y", y);
-  }
-  drawDVD();
 }
 
-    
+
 clear.addEventListener("click", erase);
 esvg.addEventListener("click", circle);
-move.addEventListener("click", circle);
+move.addEventListener("click", moving);
 
