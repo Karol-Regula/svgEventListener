@@ -10,7 +10,7 @@ function erase(event) {
 }
 
 function change(event){
-    console.log("change" + event.target);
+    //console.log("change" + event.target);
     if (this == event.target) {
 	if (this.getAttribute("fill") === "red"){
 	    esvg.removeChild(this);
@@ -36,7 +36,7 @@ function makeCircle(x,y){
 }
 
 function circle(event) {
-    console.log("svg");
+    //console.log("svg");
     var x = event.offsetX;     // Get the horizontal coordinate
     var y = event.offsetY;     // Get the vertical coordinate
     var c = makeCircle(x,y);
@@ -46,15 +46,16 @@ function circle(event) {
 }
 var requestID = 0;
 
-function moving(event) {
+function moving() {
     var xplus = 1;
     var yplus = 1;
-    console.log("here");
+    //console.log("here");
     window.cancelAnimationFrame(requestID);
     
-    function draw(){
-	x = parseInt(this.getAttribute("cx"));
-	y = parseInt(this.getAttribute("cy"));
+    function draw(kid){
+	console.log("morphed into this: " + kid);
+	x = parseInt(kid.getAttribute("cx"));
+	y = parseInt(kid.getAttribute("cy"));
 	requestID = window.requestAnimationFrame(draw);
 	if (x > 615){
 	    xplus = -1;
@@ -68,21 +69,23 @@ function moving(event) {
 	if (y < 0){
 	    yplus = 1;
 	}
-	this.setAttribute("cx", x + xplus); 
-	d.setAttribute("x", x);
-	d.setAttribute("y", y);
+	kid.setAttribute("cx", x + xplus); 
+	kid.setAttribute("x", x);
+	kid.setAttribute("y", y);
+	esvg.appendChild(kid);
     }
     var children = document.getElementsByTagName("circle");
-    console.log("and here");
-//    console.log(children[0]);
-    //    console.log(children[1]);
     var cnt = 0;
-    for (cnt in range(len(children))){
-	
-	console.log(children[cnt]);
-	draw();
+    var rng = children.length;
+    console.log(rng);
+    while (cnt < rng ){	
+	console.log("looking at this child: " + children[cnt]);
+	draw(children[cnt]);
+	cnt++;
     }
+
 }
+
 
 
 clear.addEventListener("click", erase);
