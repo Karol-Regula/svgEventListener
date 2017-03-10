@@ -50,13 +50,12 @@ function moving() {
     var xplus = 1;
     var yplus = 1;
     //console.log("here");
-    window.cancelAnimationFrame(requestID);
     
     function draw(kid){
+	window.cancelAnimationFrame(requestID);
 	console.log("morphed into this: " + kid);
 	x = parseInt(kid.getAttribute("cx"));
 	y = parseInt(kid.getAttribute("cy"));
-	requestID = window.requestAnimationFrame(draw);
 	if (x > 615){
 	    xplus = -1;
 	}
@@ -73,15 +72,14 @@ function moving() {
 	kid.setAttribute("x", x);
 	kid.setAttribute("y", y);
 	esvg.appendChild(kid);
+	requestID = window.requestAnimationFrame(draw);
     }
     var children = document.getElementsByTagName("circle");
-    var cnt = 0;
     var rng = children.length;
     console.log(rng);
-    while (cnt < rng ){	
-	console.log("looking at this child: " + children[cnt]);
-	draw(children[cnt]);
-	cnt++;
+    for (i = 0; i < rng;i++ ){	
+	console.log("looking at this child: " + children[i]);
+	draw(children[i]);
     }
 
 }
