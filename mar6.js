@@ -31,6 +31,8 @@ function makeCircle(x,y){
   var c = document.createElementNS("http://www.w3.org/2000/svg","circle");
   c.setAttribute("cx",x);
   c.setAttribute("cy",y);
+  c.setAttribute("xplus",1);
+  c.setAttribute("yplus",1);
   c.setAttribute("r","20");
   c.setAttribute("fill","#00f0fa");
   c.addEventListener("click",change);
@@ -49,34 +51,44 @@ function circle(event) {
 var requestID = 1;
 
 function moving() {
-  var xplus = 1;
-  var yplus = 1;
+  var xplus;
+  var yplus;
+  var cx;
+  var cy;
+  var kid;
   //console.log("here");
   window.cancelAnimationFrame(requestID);
 
   function draw(){
-    var children = document.getElementsByTagName("circle");
+    //var children = document.getElementsByTagName("circle");
+    var children = esvg.children;
     var rng = children.length;
     console.log(rng);
     for (i = 0; i < rng; i++){
-      var kid = children[i];
-      console.log("looking at this child: " + children[i]);
-      var x = parseInt(kid.getAttribute("cx"));
-      var y = parseInt(kid.getAttribute("cy"));
-      if (x > 615){
+      kid = children[i];
+      console.log("looking at this child: " + kid);
+      cx = parseInt(kid.getAttribute("cx"));
+      cy = parseInt(kid.getAttribute("cy"));
+      xplus = parseInt(kid.getAttribute("xplus"));
+      yplus = parseInt(kid.getAttribute("yplus"));
+      console.log(cx);
+      console.log(cy)
+      if (cx > 790){
         xplus = -1;
       }
-      if (x < 0){
+      if (cx < 10){
         xplus = 1;
       }
-      if (y > 715){
+      if (cy > 790){
         yplus = -1;
       }
-      if (y < 0){
+      if (cy < 10){
         yplus = 1;
       }
-      kid.setAttribute("cx", x + xplus);
-      kid.setAttribute("cy", y + yplus);
+      kid.setAttribute("cx", cx + xplus);
+      kid.setAttribute("cy", cy + yplus);
+      kid.setAttribute("xplus", xplus);
+      kid.setAttribute("yplus", yplus);
     }
     requestID = window.requestAnimationFrame(draw);
   }
